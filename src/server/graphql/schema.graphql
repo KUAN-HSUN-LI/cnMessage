@@ -1,0 +1,57 @@
+type Query {
+	getMessage(messageBoxId: ID!): [Message!]
+}
+
+type Mutation {
+	createUser(data: CreateUserInput!): User!
+	loginUser(data: LoginUserInput!): User!
+	deleteUsers: User
+	createFriend(data: CreateFriendInput!): Boolean
+	createMessage(data: createMessageInput!): Boolean
+}
+
+type Subscription {
+	message(msgBoxId: ID!): MsgSubscriptionPayload!
+}
+
+type User {
+	id: ID!
+	name: String!
+	friends: [Friend]
+}
+
+type Friend {
+	name: String!
+	messageBox: ID!
+}
+
+type Message {
+	id: ID!
+	author: String!
+	body: String!
+}
+
+input CreateUserInput {
+	name: String!
+	pwd: String!
+}
+
+input LoginUserInput {
+	name: String!
+	pwd: String!
+}
+
+input CreateFriendInput {
+	username: String!
+	friendname: String!
+}
+
+input createMessageInput {
+	messageBoxId: ID!
+	author: String!
+	body: String!
+}
+
+type MsgSubscriptionPayload {
+	data: Message!
+}
