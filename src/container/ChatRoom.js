@@ -30,13 +30,13 @@ const ChatRoom = props => {
 			<div className="Sidebar">
 				<p className="left-title">通訊錄</p>
 				{friends.map((d, idx) => (
-					<p
+					<div className="Friend_list"
 						key={idx}
 						onClick={e => {
 							setMessageBox(d.messageBox);
 						}}>
 						{d.name}
-					</p>
+					</div>
 				))}
 			</div>
 			<div className="Header">
@@ -44,6 +44,11 @@ const ChatRoom = props => {
 			</div>
 			<Message messageBox={messageBox} name={name}></Message>
 			<div className="Footer">
+				<label for="file-upload" className="custom-file-upload">
+	    			<i className="fa fa-folder"></i> File
+				</label>
+				<input id="file-upload" type="file"/>
+			  
 				<textarea
 					className="textbox"
 					type="text"
@@ -55,14 +60,6 @@ const ChatRoom = props => {
 						}
 					}}
 					value={newMsg}></textarea>
-				<button
-					className="Send"
-					type="submit"
-					onClick={e => {
-						handleSubmit(e);
-					}}>
-					submit
-				</button>
 			</div>
 		</div>
 	);
