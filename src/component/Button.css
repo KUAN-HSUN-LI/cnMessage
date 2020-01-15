@@ -11,3 +11,7 @@
 	margin: 0.5em;
 	outline: none;
 }
+.button-base:hover {
+background:white;
+color:black;
+}
