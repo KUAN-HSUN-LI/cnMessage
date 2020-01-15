@@ -36,22 +36,23 @@ const Login = props => {
 	return (
 		<div className="login-base">
 			<h1 className="title">Message Box Login</h1>
-			<label className="white-word">User Name :</label>
-			<br />
+			<div type='label' className="white-word">User Name :>
+			</div>
+			<div>
 			<Input
 				className="input-base"
 				type="text"
 				onChange={e => setName(e.target.value)}
 				onKeyPress={e => handleKeypress(e)}></Input>
-			<br />
-			<label className="white-word">Password :</label>
-			<br />
+			</div>
+			<div type='label' className="white-word">Password :</div>
+            <div>
 			<Input
 				className="input-base"
 				type="password"
 				onChange={e => setPwd(e.target.value)}
 				onKeyPress={e => handleKeypress(e)}></Input>
-			<br />
+			</div>
 			<Button name="submit" onClick={handleSubmit}></Button>
 			<Button name="cancel"></Button>
 		</div>
