@@ -59,11 +59,15 @@ const Message = props => {
 	}
 
 	return (
-		<div className="Body" id="Body" ref={ref}>
-			<label for="change-background" className="custom-change-background">切換背景
-			</label>
-			<input type="button" id="change-background" className="change-background-button" onClick={validate}/>
+	<div>
+		<div className="Header" >
+				<p className="right-title">Message</p>
+				<label for="change-background" className="custom-change-background">切換背景
+				</label>
+				<input type="button" id="change-background" className="change-background-button" onClick={validate}/>
+		</div>
 
+		<div className="Body" id="Body" ref={ref}>			
 			{data.getMessage.map((msg, idx) => {
 				if (msg.author === name) {
 					return (
@@ -84,6 +88,7 @@ const Message = props => {
 				}
 			})}
 		</div>
+	</div>
 	);
 };
 
