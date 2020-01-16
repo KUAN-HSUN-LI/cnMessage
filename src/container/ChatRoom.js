@@ -29,6 +29,8 @@ const ChatRoom = props => {
 		<div className="ChatRoom">
 			<div className="Sidebar">
 				<p className="left-title">通訊錄</p>
+				<input className="add_friend" type="text"/>
+				<input className="add_friend_button" value="加好友" type='button'/>
 				{friends.map((d, idx) => (
 					<div className="Friend_list"
 						key={idx}
@@ -39,15 +41,15 @@ const ChatRoom = props => {
 					</div>
 				))}
 			</div>
-			<div className="Header">
-				<p className="right-title">Message</p>
-			</div>
+
+			
 			<Message messageBox={messageBox} name={name}></Message>
 			<div className="Footer">
+				
 				<label for="file-upload" className="custom-file-upload">
 	    			<i className="fa fa-folder"></i> File
 				</label>
-				<input id="file-upload" type="file"/>
+				<input id="file-upload" type="file" className="file"/>
 			  
 				<textarea
 					className="textbox"
