@@ -62,7 +62,7 @@ const Message = props => {
 	<div>
 		<div className="Header" >
 				<p className="right-title">Message</p>
-				<label for="change-background" className="custom-change-background">切換背景
+				<label htmlFor="change-background" className="custom-change-background">切換背景
 				</label>
 				<input type="button" id="change-background" className="change-background-button" onClick={validate}/>
 		</div>
