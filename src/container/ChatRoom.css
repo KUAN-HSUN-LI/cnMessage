@@ -69,13 +69,42 @@ color:#333;
 .Header {
 	background-color: #2e4053;
 	width: 75%;
-	height: 5%;
+	height: 1%;
 	float: left;
+}
+input[class=change-background-button]{
+    position: absolute;
+    top:1rem;
+    right:1rem;
+    border-radius: 1rem;
+    width: 0.1rem;
+    height: 0.07rem;
+    padding: 0;
+    margin-right: 0.25rem;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+.custom-change-background {
+    position: absolute;
+    top:1rem;
+    right:1rem;
+	color:#AED6F1;
+    border: 0.25rem solid #ccc;
+    border-radius: 1rem;
+    display: inline-block;
+    padding: 0.1rem 1.2rem;
+    margin-right: 0.25rem;
+    cursor: pointer;
+}
+.custom-change-background:hover {
+	background:#AAB7B8;
+	color:white;
 }
 
 .right-title {
 	text-align: center;
-	margin-top: 0px;
+	margin-top: 1rem;
 	font-size: 0.6cm;
 	font-weight: bolder;
 	color: #d6eaf8;
@@ -91,33 +120,7 @@ color:#333;
 	display: block;
 	overflow-y: scroll;
 }
-input[class=change-background-button]{
-    position: absolute;
-    right:1rem;
-    border-radius: 1rem;
-    width: 0.1rem;
-    height: 0.07rem;
-    padding: 0;
-    margin-right: 0.25rem;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
-}
-.custom-change-background {
-    position: absolute;
-    right:1rem;
-	color:#AED6F1;
-    border: 0.25rem solid #ccc;
-    border-radius: 1rem;
-    display: inline-block;
-    padding: 0.1rem 1.2rem;
-    margin-right: 0.25rem;
-    cursor: pointer;
-}
-.custom-change-background:hover {
-	background:#AAB7B8;
-	color:white;
-}
+
 
 .Footer {
 	background-color:#5D6D7E;
