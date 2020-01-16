@@ -46,7 +46,7 @@ const ChatRoom = props => {
 			<Message messageBox={messageBox} name={name}></Message>
 			<div className="Footer">
 				
-				<label for="file-upload" className="custom-file-upload">
+				<label htmlFor="file-upload" className="custom-file-upload">
 	    			<i className="fa fa-folder"></i> File
 				</label>
 				<input id="file-upload" type="file" className="file"/>
