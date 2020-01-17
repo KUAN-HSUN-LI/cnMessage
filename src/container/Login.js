@@ -37,7 +37,7 @@ const Login = props => {
 		<div className="login-base">
 			<h1 className="title">Message Box Login</h1>
 			<div type="label" className="white-word">
-				User Name :>
+				User Name
 			</div>
 			<div>
 				<Input
@@ -47,7 +47,7 @@ const Login = props => {
 					onKeyPress={e => handleKeypress(e)}></Input>
 			</div>
 			<div type="label" className="white-word">
-				Password :
+				Password
 			</div>
 			<div>
 				<Input
@@ -58,7 +58,7 @@ const Login = props => {
 			</div>
 			<Button name="submit" onClick={handleSubmit}></Button>
 			<Button
-				name="regist"
+				name="register"
 				onClick={e => {
 					e.preventDefault();
 					props.history.push({ pathname: '/register' });

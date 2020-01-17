@@ -25,7 +25,6 @@ const Mutation = {
 	},
 	loginUser: async (parent, args, { db, pubsub, models }, info) => {
 		const user = await models.User.findOne({ name: args.data.name });
-		console.log(user);
 		if (user) {
 			if (bcrypt.compareSync(args.data.pwd, user.pwd)) {
 				return user;
@@ -37,7 +36,6 @@ const Mutation = {
 		}
 	},
 	deleteUsers: async (parent, args, { db, pubsub, models }, info) => {
-		console.log('in');
 		models.User.deleteMany({})
 			.then(console.log('del success'))
 			.catch(e => {
@@ -129,7 +127,7 @@ const Mutation = {
 			encoding: encoding,
 			stream: file_string,
 		};
-		console.log(args.msgBoxId);
+		console.log(filename);
 		pubsub.publish(`file ${args.msgBoxId} ${args.reciever}`, {
 			file: {
 				data: output_file,
