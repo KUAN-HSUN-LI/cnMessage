@@ -13,11 +13,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const WS = window.location.origin.replace('http', 'ws');
+// const WS = window.location.origin.replace('http', 'ws');
 
 const wsLink = new WebSocketLink({
 	// uri: 'ws://localhost:4000/',
-	uri: WS,
+	uri: '/',
 	options: { reconnect: true },
 	credentials: 'include',
 });
