@@ -32,14 +32,16 @@ if (process.env.NODE_ENV === 'production') {
 	});
 }
 
-// const opts = {
-//     port: process.env.PORT || 4000,
-//     cors: {
-//       credentials: true,
-//       origin: ['http://localhost:3000','http://localhost:3001']
-//     },
-// };
+const opts = {
+	port: process.env.PORT || 4000,
+	cors: {
+		credentials: true,
+		origin: ['http://localhost:3000', 'http://localhost:3001'],
+	},
+};
 
-server.start({ port: process.env.PORT | 4000 }, () => {
-	console.log(`The server is up on port ${process.env.PORT | 4000}!`);
-});
+server.start(opts, () => console.log(`Server is running on http://localhost:${opts.port}`));
+
+// server.start({ port: process.env.PORT | 4000 }, () => {
+// 	console.log(`The server is up on port ${process.env.PORT | 4000}!`);
+// });
