@@ -1,7 +1,5 @@
 import uuidv4 from 'uuid/v4';
 import bcrypt from 'bcryptjs';
-import fs, { Dir } from 'fs';
-import path from 'path';
 const Mutation = {
 	createUser: async (parent, args, { db, pubsub, models }, info) => {
 		await models.User.findOne({ name: args.data.name }).then(e => {
@@ -24,7 +22,7 @@ const Mutation = {
 		return user;
 	},
 	loginUser: async (parent, args, { db, pubsub, models }, info) => {
-		const user = await models.User.findOne({ name: args.data.name });
+		var user = await models.User.findOne({ name: args.data.name });
 		if (user) {
 			if (bcrypt.compareSync(args.data.pwd, user.pwd)) {
 				return user;
@@ -44,14 +42,19 @@ const Mutation = {
 	},
 	createFriend: async (parent, args, { db, pubsub, models }, info) => {
 		const { username, friendname } = args.data;
-		await models.User.findOne({ name: friendname })
-			.then(d => {
-				if (!d) return false;
-			})
-			.catch(e => {
-				console.error(e);
-			});
-
+		if (username === friendname) {
+			return false;
+		}
+		const find = await models.User.findOne({ name: friendname });
+		if (!find) {
+			return false;
+		}
+		const user = await models.User.findOne({ name: username });
+		for (var friend in user.friends) {
+			if (friend.name === friendname) {
+				return false;
+			}
+		}
 		const boxId = uuidv4();
 		const messageBox = {
 			id: boxId,
@@ -61,9 +64,25 @@ const Mutation = {
 		await newMessageBox.save().catch(e => {
 			throw new Error('Cannot Save MessageBox!!!');
 		});
-
+		pubsub.publish(`friend ${username}`, {
+			friend: {
+				data: {
+					name: friendname,
+					messageBox: boxId,
+				},
+			},
+		});
+		pubsub.publish(`friend ${friendname}`, {
+			friend: {
+				data: {
+					name: username,
+					messageBox: boxId,
+				},
+			},
+		});
 		await models.User.updateOne({ name: username }, { $push: { friends: { name: friendname, messageBox: messageBox.id } } });
 		await models.User.updateOne({ name: friendname }, { $push: { friends: { name: username, messageBox: messageBox.id } } });
+		return true;
 	},
 	createMessage: async (parent, args, { db, pubsub, models }, info) => {
 		const { messageBoxId, author, body } = args.data;
@@ -80,12 +99,27 @@ const Mutation = {
 		await models.MessageBox.updateOne({ id: messageBoxId }, { $push: { messages: msgId } });
 		pubsub.publish(`msg ${messageBoxId}`, {
 			message: {
+				mutation: 'CREATED',
 				data: msg,
 			},
 		});
 	},
+	deleteMessage: async (parent, args, { db, pubsub, models }, info) => {
+		const { messageBoxId, messageId } = args.data;
+		await models.MessageBox.updateOne({ id: messageBoxId }, { $pull: { messages: messageId } });
+		await models.Message.deleteOne({ id: messageId });
+		pubsub.publish(`msg ${messageBoxId}`, {
+			message: {
+				mutation: 'DELETED',
+				data: {
+					id: messageId,
+					author: '',
+					body: '',
+				},
+			},
+		});
+	},
 	uploadFile: async (parent, args, { db, pubsub, models }, info) => {
-		// return '123';
 		const { createReadStream, filename, mimetype, encoding } = await args.file;
 		const id = uuidv4();
 
@@ -106,20 +140,6 @@ const Mutation = {
 			});
 		});
 
-		const stream = createReadStream(filename);
-		var buf = new Buffer('');
-		var res;
-		stream.on('data', chunk => {
-			buf = Buffer.concat([buf, chunk]);
-		});
-		stream.on('error', err => {
-			reject(err);
-		});
-		stream.on('end', () => {
-			res = buf.toString('base64');
-			buf = null; // Clean up memory
-			stream.destroy();
-		});
 		const output_file = {
 			id: id,
 			filename: filename,
