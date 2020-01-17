@@ -24,7 +24,22 @@ const server = new GraphQLServer({
 	context,
 });
 
+server.express.use(
+	session({
+		name: 'jackson',
+		secret: `some-random-secret-here`,
+		resave: true,
+		saveUninitialized: true,
+		cookie: {
+			secure: process.env.NODE_ENV === 'production',
+			maxAge: ms('1d'),
+		},
+	})
+);
+
 server.express.set('trust proxy', true);
+server.express.use(bodyParser({ limit: '16mb' }));
+
 if (process.env.NODE_ENV === 'production') {
 	const root = path.join(__dirname, 'build');
 	server.express.use(express.static(root));
