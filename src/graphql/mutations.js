@@ -19,3 +19,11 @@ export const CREATE_MSG_MUTATION = gql`
 		createMessage(data: { messageBoxId: $messageBoxId, author: $author, body: $body })
 	}
 `;
+
+export const UPLOAD_FILE_MUTATION = gql`
+	mutation uploadFile($file: Upload!, $msgBoxId: ID!, $reciever: String!) {
+		uploadFile(file: $file, msgBoxId: $msgBoxId, reciever: $reciever) {
+			filename
+		}
+	}
+`;

@@ -5,6 +5,12 @@ const Subscription = {
 			return pubsub.asyncIterator(`msg ${args.msgBoxId}`);
 		},
 	},
+	file: {
+		subscribe: async (parent, args, { pubsub }, info) => {
+			console.log(args);
+			return pubsub.asyncIterator(`file ${args.msgBoxId} ${args.reciever}`);
+		},
+	},
 };
 
 export { Subscription as default };

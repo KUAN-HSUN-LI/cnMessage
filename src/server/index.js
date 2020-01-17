@@ -24,6 +24,14 @@ const server = new GraphQLServer({
 	context,
 });
 
+// const opts = {
+//     port: process.env.PORT || 4000,
+//     cors: {
+//       credentials: true,
+//       origin: ['http://localhost:3000','http://localhost:3001']
+//     },
+// };
+
 server.start({ port: process.env.PORT | 4000 }, () => {
 	console.log(`The server is up on port ${process.env.PORT | 4000}!`);
 });
