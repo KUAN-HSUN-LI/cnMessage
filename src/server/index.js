@@ -24,6 +24,7 @@ const server = new GraphQLServer({
 	context,
 });
 
+server.express.set('trust proxy', true);
 if (process.env.NODE_ENV === 'production') {
 	const root = path.join(__dirname, 'build');
 	server.express.use(express.static(root));

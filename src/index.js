@@ -13,18 +13,18 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const WS = window.location.origin.replace('http', 'ws');
+// const WS = window.location.origin.replace('http', 'ws');
 
 const wsLink = new WebSocketLink({
-	// uri: 'ws://localhost:4000/',
-	uri: WS,
+	uri: 'ws://localhost:4000/',
+	// uri: WS,
 	options: { reconnect: true },
 	credentials: 'include',
 });
 
 const upLink = new createUploadLink({
-	// uri: 'http://localhost:4000/',
-	uri: '/',
+	uri: 'http://localhost:4000/',
+	// uri: '/',
 	credentials: 'include',
 });
 
