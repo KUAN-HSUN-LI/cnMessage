@@ -7,7 +7,7 @@ import './Login.css';
 
 import { LOGIN_USER_MUTATION } from '../graphql';
 
-const Login = props => {
+const Regist = props => {
 	const [name, setName] = useState('');
 	const [pwd, setPwd] = useState('');
 	const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION);
@@ -36,36 +36,32 @@ const Login = props => {
 	return (
 		<div className="login-base">
 			<h1 className="title">Message Box Login</h1>
-			<div type="label" className="white-word">
-				User Name :>
-			</div>
-			<div>
-				<Input
-					className="input-base"
-					type="text"
-					onChange={e => setName(e.target.value)}
-					onKeyPress={e => handleKeypress(e)}></Input>
-			</div>
-			<div type="label" className="white-word">
-				Password :
-			</div>
-			<div>
-				<Input
-					className="input-base"
-					type="password"
-					onChange={e => setPwd(e.target.value)}
-					onKeyPress={e => handleKeypress(e)}></Input>
-			</div>
-			<Button name="submit" onClick={handleSubmit}></Button>
+			<label className="white-word">User Name :</label>
+			<br />
+			<Input
+				className="input-base"
+				type="text"
+				onChange={e => setName(e.target.value)}
+				onKeyPress={e => handleKeypress(e)}></Input>
+			<br />
+			<label className="white-word">Password :</label>
+			<br />
+			<Input
+				className="input-base"
+				type="password"
+				onChange={e => setPwd(e.target.value)}
+				onKeyPress={e => handleKeypress(e)}></Input>
+			<br />
+			<Button name="regist" onClick={handleSubmit}></Button>
 			<Button
-				name="regist"
+				name="cancel"
 				onClick={e => {
 					e.preventDefault();
-					props.history.push({ pathname: '/register' });
-					return <Redirect to={{ pathname: '/register' }} />;
+					props.history.push({ pathname: '/login' });
+					return <Redirect to={{ pathname: '/login' }} />;
 				}}></Button>
 		</div>
 	);
 };
 
-export default Login;
+export default Regist;

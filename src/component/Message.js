@@ -12,16 +12,14 @@ const Message = props => {
 	});
 	const ref = useRef(null);
 	const [scribe, setScribe] = useState(false);
+
 	useLayoutEffect(() => {
 		if (ref.current) {
 			ref.current.scrollTop = ref.current.scrollHeight;
 		}
 	});
-	if (loading) return <p>Loading...</p>;
-	if (!data) return <></>;
-	if (!scribe) {
-		setScribe(true);
-		subscribeToMore({
+	useLayoutEffect(() => {
+		const s = subscribeToMore({
 			document: MSG_SUBSCRIPTION,
 			variables: {
 				msgBoxId: messageBox,
@@ -35,8 +33,27 @@ const Message = props => {
 				};
 			},
 		});
-	}
-
+		return () => s();
+	}, [messageBox]);
+	if (loading) return <p>Loading...</p>;
+	if (!data) return <></>;
+	// if (!scribe) {
+	// 	setScribe(true);
+	// 	subscribeToMore({
+	// 		document: MSG_SUBSCRIPTION,
+	// 		variables: {
+	// 			msgBoxId: messageBox,
+	// 		},
+	// 		updateQuery: (prev, { subscriptionData }) => {
+	// 			if (!subscriptionData.data) return prev;
+	// 			const newMsg = subscriptionData.data.message.data;
+	// 			return {
+	// 				...prev,
+	// 				getMessage: [...prev.getMessage, newMsg],
+	// 			};
+	// 		},
+	// 	});
+	// }
 	return (
 		<div className="Body" ref={ref}>
 			{data.getMessage.map((msg, idx) => {

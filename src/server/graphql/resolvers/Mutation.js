@@ -1,6 +1,7 @@
 import uuidv4 from 'uuid/v4';
 import bcrypt from 'bcryptjs';
-
+import fs, { Dir } from 'fs';
+import path from 'path';
 const Mutation = {
 	createUser: async (parent, args, { db, pubsub, models }, info) => {
 		await models.User.findOne({ name: args.data.name }).then(e => {
@@ -84,6 +85,57 @@ const Mutation = {
 				data: msg,
 			},
 		});
+	},
+	uploadFile: async (parent, args, { db, pubsub, models }, info) => {
+		// return '123';
+		const { createReadStream, filename, mimetype, encoding } = await args.file;
+		const id = uuidv4();
+
+		const file_string = new Promise(function(resolve, reject) {
+			const stream = createReadStream(filename);
+			var buf = new Buffer('');
+			stream.on('data', chunk => {
+				buf = Buffer.concat([buf, chunk]);
+			});
+			stream.on('error', err => {
+				reject(err);
+			});
+			stream.on('end', () => {
+				var res = buf.toString('base64');
+				buf = null; // Clean up memory
+				stream.destroy();
+				resolve(res);
+			});
+		});
+
+		const stream = createReadStream(filename);
+		var buf = new Buffer('');
+		var res;
+		stream.on('data', chunk => {
+			buf = Buffer.concat([buf, chunk]);
+		});
+		stream.on('error', err => {
+			reject(err);
+		});
+		stream.on('end', () => {
+			res = buf.toString('base64');
+			buf = null; // Clean up memory
+			stream.destroy();
+		});
+		const output_file = {
+			id: id,
+			filename: filename,
+			mimetype: mimetype,
+			encoding: encoding,
+			stream: file_string,
+		};
+		console.log(args.msgBoxId);
+		pubsub.publish(`file ${args.msgBoxId} ${args.reciever}`, {
+			file: {
+				data: output_file,
+			},
+		});
+		return output_file;
 	},
 };
 

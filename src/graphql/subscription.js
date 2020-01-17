@@ -10,3 +10,16 @@ export const MSG_SUBSCRIPTION = gql`
 		}
 	}
 `;
+
+export const FILE_SUBSCRIPTION = gql`
+	subscription($msgBoxId: ID!, $reciever: String!) {
+		file(msgBoxId: $msgBoxId, reciever: $reciever) {
+			data {
+				filename
+				mimetype
+				encoding
+				stream
+			}
+		}
+	}
+`;

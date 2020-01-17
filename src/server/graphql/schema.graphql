@@ -1,5 +1,7 @@
+scalar Upload
 type Query {
 	getMessage(messageBoxId: ID!): [Message!]
+	uploads: [File]
 }
 
 type Mutation {
@@ -8,10 +10,12 @@ type Mutation {
 	deleteUsers: User
 	createFriend(data: CreateFriendInput!): Boolean
 	createMessage(data: createMessageInput!): Boolean
+	uploadFile(file: Upload!, msgBoxId: ID!, reciever: String!): File!
 }
 
 type Subscription {
 	message(msgBoxId: ID!): MsgSubscriptionPayload!
+	file(msgBoxId: ID!, reciever: String!): FileSubscriptionPayload!
 }
 
 type User {
@@ -29,6 +33,13 @@ type Message {
 	id: ID!
 	author: String!
 	body: String!
+}
+
+type File {
+	filename: String!
+	mimetype: String!
+	encoding: String!
+	stream: String
 }
 
 input CreateUserInput {
@@ -54,4 +65,8 @@ input createMessageInput {
 
 type MsgSubscriptionPayload {
 	data: Message!
+}
+
+type FileSubscriptionPayload {
+	data: File!
 }
