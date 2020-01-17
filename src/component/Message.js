@@ -3,6 +3,24 @@ import '../container/ChatRoom.css';
 import { useQuery } from 'react-apollo';
 
 import { GET_MESSAGE_QUERY, MSG_SUBSCRIPTION } from '../graphql';
+// var curIndex = 0;
+// function validate() {
+// 	var arr = [];
+// 	arr[0] = 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1467039275461.jpg';
+// 	arr[1] = 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1467033715932.jpg';
+// 	arr[2] = 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1467036196503.jpg';
+// 	arr[3] = 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1515637338218.jpg';
+// 	arr[4] = 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1467038513288.jpg';
+// 	arr[5] = 'https://www.marine.gov.tw/filesys/image/gallery/212/photo-5m456.jpg';
+// 	arr[6] = 'https://www.marine.gov.tw/filesys/image/gallery/212/photo-sqhpp.jpg';
+// 	arr[7] = 'https://www.marine.gov.tw/filesys/image/gallery/212/photo-4b4ss.jpg';
+// 	if (curIndex == arr.length - 1) {
+// 		curIndex = 0;
+// 	} else {
+// 		curIndex += 1;
+// 	}
+// 	document.getElementById('Body').style.backgroundImage = 'url(' + arr[curIndex] + ')';
+// }
 
 const Message = props => {
 	const messageBox = props.messageBox;
@@ -55,27 +73,37 @@ const Message = props => {
 	// 	});
 	// }
 	return (
-		<div className="Body" ref={ref}>
-			{data.getMessage.map((msg, idx) => {
-				if (msg.author === name) {
-					return (
-						<div className="message" key={idx}>
-							<div className="me" type="txt">
+		<>
+			{/* <div className="Header">
+				<p className="right-title">Message</p>
+				<label htmlFor="change-background" className="custom-change-background">
+					切換背景
+				</label>
+				<input type="button" id="change-background" className="change-background-button" onClick={validate} />
+			</div> */}
+
+			<div className="Body" id="Body" ref={ref}>
+				{data.getMessage.map((msg, idx) => {
+					if (msg.author === name) {
+						return (
+							// <div className="message" key={idx}>
+							<div className="me" type="txt" key={idx}>
 								{msg.body}
 							</div>
-						</div>
-					);
-				} else {
-					return (
-						<div className="message" key={idx}>
-							<div className="friend" type="txt">
+							// </div>
+						);
+					} else {
+						return (
+							// <div className="message" key={idx}>
+							<div className="friend" type="txt" key={idx}>
 								{msg.body}
 							</div>
-						</div>
-					);
-				}
-			})}
-		</div>
+							// </div>
+						);
+					}
+				})}
+			</div>
+		</>
 	);
 };
 

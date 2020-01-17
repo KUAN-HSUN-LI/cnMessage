@@ -36,7 +36,7 @@ const Regist = props => {
 	return (
 		<div className="login-base">
 			<h1 className="title">Message Box Login</h1>
-			<label className="white-word">User Name :</label>
+			<label className="white-word">User Name</label>
 			<br />
 			<Input
 				className="input-base"
@@ -44,7 +44,7 @@ const Regist = props => {
 				onChange={e => setName(e.target.value)}
 				onKeyPress={e => handleKeypress(e)}></Input>
 			<br />
-			<label className="white-word">Password :</label>
+			<label className="white-word">Password</label>
 			<br />
 			<Input
 				className="input-base"
@@ -52,7 +52,7 @@ const Regist = props => {
 				onChange={e => setPwd(e.target.value)}
 				onKeyPress={e => handleKeypress(e)}></Input>
 			<br />
-			<Button name="regist" onClick={handleSubmit}></Button>
+			<Button name="register" onClick={e => handleSubmit(e)}></Button>
 			<Button
 				name="cancel"
 				onClick={e => {
