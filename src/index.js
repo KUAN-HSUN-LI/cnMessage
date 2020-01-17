@@ -16,14 +16,14 @@ import * as serviceWorker from './serviceWorker';
 // const WS = window.location.origin.replace('http', 'ws');
 
 const wsLink = new WebSocketLink({
-	uri: 'ws://140.112.243.105:4000/',
+	uri: 'ws://localhost:4000/',
 	//uri: WS,
 	options: { reconnect: true },
 	// credentials: 'include',
 });
 
 const upLink = new createUploadLink({
-	uri: 'http://140.112.243.105:4000/',
+	uri: 'http://localhost:4000/',
 	//uri: '/',
 	// credentials: 'include',
 });

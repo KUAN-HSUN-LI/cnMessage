@@ -10,12 +10,14 @@ type Mutation {
 	deleteUsers: User
 	createFriend(data: CreateFriendInput!): Boolean
 	createMessage(data: createMessageInput!): Boolean
+	deleteMessage(data: deleteMessageInput!): Boolean
 	uploadFile(file: Upload!, msgBoxId: ID!, reciever: String!): File!
 }
 
 type Subscription {
 	message(msgBoxId: ID!): MsgSubscriptionPayload!
 	file(msgBoxId: ID!, reciever: String!): FileSubscriptionPayload!
+	friend(name: String!): FriendSubscriptionPayload!
 }
 
 type User {
@@ -63,10 +65,26 @@ input createMessageInput {
 	body: String!
 }
 
+input deleteMessageInput {
+	messageBoxId: ID!
+	messageId: ID!
+}
+
 type MsgSubscriptionPayload {
+	mutation: MutationType
 	data: Message!
 }
 
 type FileSubscriptionPayload {
 	data: File!
+}
+
+type FriendSubscriptionPayload {
+	data: Friend!
+}
+
+enum MutationType {
+	CREATED
+	UPDATED
+	DELETED
 }

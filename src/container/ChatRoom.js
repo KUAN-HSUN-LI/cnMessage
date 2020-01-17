@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './ChatRoom.css';
-import { useMutation } from 'react-apollo';
+import { useMutation, useSubscription } from 'react-apollo';
 import Message from '../component/Message';
 import GetFile from './GetFile';
-import { CREATE_MSG_MUTATION, UPLOAD_FILE_MUTATION } from '../graphql';
+import AddFriend from '../component/AddFriend';
+import { CREATE_MSG_MUTATION, UPLOAD_FILE_MUTATION, FRIEND_SUBSCRIPTION } from '../graphql';
+
 const ChatRoom = props => {
 	const friends = props.location.state.friends;
 	const name = props.location.state.name;
-	const [msgBoxId, setMsgBoxId] = useState(friends[0].messageBox);
-	const [friend, setFriend] = useState(friends[0].name);
+	const [msgBoxId, setMsgBoxId] = useState(null);
+	const [friend, setFriend] = useState(null);
 	const [newMsg, setNewMsg] = useState('');
 
 	const [createMsgMutation] = useMutation(CREATE_MSG_MUTATION);
 	const [uploadFileMutation] = useMutation(UPLOAD_FILE_MUTATION);
 
-	// const test = useSubscription(FILE_SUBSCRIPTION);
+	const newFriend = useSubscription(FRIEND_SUBSCRIPTION, { variables: { name: name } });
 
 	const handleSubmit = e => {
 		e.preventDefault();
@@ -34,6 +36,13 @@ const ChatRoom = props => {
 			variables: { file: file, msgBoxId: msgBoxId, reciever: friend },
 		});
 	};
+
+	useEffect(() => {
+		if (newFriend.data) {
+			friends.push(newFriend.data.friend.data);
+		}
+	}, [newFriend.data, friends]);
+
 	useEffect(() => {
 		var current = document.getElementById(friend);
 		if (current) {
@@ -44,28 +53,27 @@ const ChatRoom = props => {
 				current.classList.add('Friend_list_black');
 			};
 		}
-		console.log('in');
 	}, [friend]);
-	// useEffect(() => {
-	// 	console.log(test);
-	// 	// if (test.data) {
-	// 	// 	var { stream, filename, mimetype, encoding } = test.data.file.data;
-	// 	// 	var output = Buffer.from(stream, 'base64');
-	// 	// 	fileDownload(output, filename, mimetype);
-	// 	// }
-	// });
+
 	return (
 		<div className="ChatRoom">
 			<div className="Sidebar">
-				<p className="left-title">通訊錄</p>
-				<GetFile name={name} msgBoxId={msgBoxId}></GetFile>
-				<input className="add_friend" type="text" />
-				<input className="add_friend_button" value="加好友" type="button" />
+				<div className="snow-container">
+					<div className="snow middleground"></div>
+					<div className="snow middleground layered"></div>
+					<div className="snow background"></div>
+					<div className="snow background layered"></div>
+				</div>
+				<p className="left-title">
+					<i className="fa fa-address-book"></i>通訊錄
+				</p>
+
+				<AddFriend name={name} />
 				{friends.map((d, idx) => (
 					<div
-						className="Friend_list"
+						className="Friend_list Friend_list_black"
 						key={idx}
-						onClick={e => {
+						onClick={() => {
 							setMsgBoxId(d.messageBox);
 							setFriend(d.name);
 						}}
@@ -75,9 +83,20 @@ const ChatRoom = props => {
 				))}
 			</div>
 			<div className="Header">
-				<p className="right-title">Message</p>
+				<p className="right-title">
+					<i className="fa fa-commenting-o"></i>Message
+				</p>
 			</div>
-			<Message messageBox={msgBoxId} name={name}></Message>
+			{msgBoxId ? (
+				<>
+					<Message messageBox={msgBoxId} name={name}></Message>
+					<GetFile name={name} msgBoxId={msgBoxId}></GetFile>
+				</>
+			) : (
+				<div className="Body" id="Body">
+					<h1>Choose a friend</h1>
+				</div>
+			)}
 
 			<div className="Footer">
 				<label htmlFor="file-upload" className="custom-file-upload">

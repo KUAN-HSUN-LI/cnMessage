@@ -1,8 +1,11 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import '../container/ChatRoom.css';
 import { useQuery } from 'react-apollo';
+import './Message.css';
+import { GET_MESSAGE_QUERY, DELETE_MSG_MUTATION, MSG_SUBSCRIPTION } from '../graphql';
+import logo from '../img/x.png';
+import { useMutation } from 'react-apollo';
 
-import { GET_MESSAGE_QUERY, MSG_SUBSCRIPTION } from '../graphql';
 // var curIndex = 0;
 // function validate() {
 // 	var arr = [];
@@ -29,7 +32,16 @@ const Message = props => {
 		variables: { messageBoxId: messageBox },
 	});
 	const ref = useRef(null);
-	const [scribe, setScribe] = useState(false);
+	const [deleteMsgMutation] = useMutation(DELETE_MSG_MUTATION);
+
+	const handleDeleteMsg = id => {
+		deleteMsgMutation({
+			variables: {
+				messageBoxId: messageBox,
+				messageId: id,
+			},
+		});
+	};
 
 	useLayoutEffect(() => {
 		if (ref.current) {
@@ -44,66 +56,64 @@ const Message = props => {
 			},
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev;
-				const newMsg = subscriptionData.data.message.data;
-				return {
-					...prev,
-					getMessage: [...prev.getMessage, newMsg],
-				};
+				let mutationType = subscriptionData.data.message.mutation;
+				if (mutationType === 'CREATED') {
+					const newMsg = subscriptionData.data.message.data;
+					return {
+						...prev,
+						getMessage: [...prev.getMessage, newMsg],
+					};
+				} else if (mutationType === 'DELETED') {
+					const msgId = subscriptionData.data.message.data.id;
+					const Msg = prev.getMessage.filter(msg => msg.id !== msgId);
+					return {
+						...prev,
+						getMessage: Msg,
+					};
+				}
 			},
 		});
 		return () => s();
-	}, [messageBox]);
-	if (loading) return <p>Loading...</p>;
+	}, [messageBox, subscribeToMore]);
+	if (loading)
+		return (
+			<div className="Body" id="Body" ref={ref}>
+				<p>Loading...</p>
+			</div>
+		);
 	if (!data) return <></>;
-	// if (!scribe) {
-	// 	setScribe(true);
-	// 	subscribeToMore({
-	// 		document: MSG_SUBSCRIPTION,
-	// 		variables: {
-	// 			msgBoxId: messageBox,
-	// 		},
-	// 		updateQuery: (prev, { subscriptionData }) => {
-	// 			if (!subscriptionData.data) return prev;
-	// 			const newMsg = subscriptionData.data.message.data;
-	// 			return {
-	// 				...prev,
-	// 				getMessage: [...prev.getMessage, newMsg],
-	// 			};
-	// 		},
-	// 	});
-	// }
-	return (
-		<>
-			{/* <div className="Header">
+
+	/* <div className="Header">
 				<p className="right-title">Message</p>
 				<label htmlFor="change-background" className="custom-change-background">
 					切換背景
 				</label>
 				<input type="button" id="change-background" className="change-background-button" onClick={validate} />
-			</div> */}
+			</div> */
 
-			<div className="Body" id="Body" ref={ref}>
-				{data.getMessage.map((msg, idx) => {
-					if (msg.author === name) {
-						return (
-							// <div className="message" key={idx}>
-							<div className="me" type="txt" key={idx}>
+	return (
+		<div className="Body" id="Body" ref={ref}>
+			{data.getMessage.map((msg, idx) => {
+				if (msg.author === name) {
+					return (
+						// <div className="message" key={idx}>
+						<div className="me_block" key={idx}>
+							<div className="me" type="txt">
 								{msg.body}
 							</div>
-							// </div>
-						);
-					} else {
-						return (
-							// <div className="message" key={idx}>
-							<div className="friend" type="txt" key={idx}>
-								{msg.body}
-							</div>
-							// </div>
-						);
-					}
-				})}
-			</div>
-		</>
+							<img src={logo} alt="X" className="msg_x" onClick={() => handleDeleteMsg(msg.id)} />
+						</div>
+						// </div>
+					);
+				} else {
+					return (
+						<div className="friend" type="txt" key={idx}>
+							{msg.body}
+						</div>
+					);
+				}
+			})}
+		</div>
 	);
 };
 

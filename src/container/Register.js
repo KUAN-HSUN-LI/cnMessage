@@ -5,12 +5,12 @@ import { Redirect } from 'react-router-dom';
 import { useMutation } from 'react-apollo';
 import './Login.css';
 
-import { LOGIN_USER_MUTATION } from '../graphql';
+import { CREATE_USER_MUTATION } from '../graphql';
 
 const Regist = props => {
 	const [name, setName] = useState('');
 	const [pwd, setPwd] = useState('');
-	const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION);
+	const [createUserMutation] = useMutation(CREATE_USER_MUTATION);
 	const handleKeypress = e => {
 		if (e.key === 'Enter') {
 			handleSubmit(e);
@@ -19,15 +19,15 @@ const Regist = props => {
 	const handleSubmit = e => {
 		e.preventDefault();
 		if (!name || !pwd) return;
-		loginUserMutation({
+		createUserMutation({
 			variables: {
 				name: name,
 				pwd: pwd,
 			},
 		})
 			.then(e => {
-				props.history.push({ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } });
-				return <Redirect to={{ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } }} />;
+				props.history.push({ pathname: '/chatroom', state: { friends: e.data.createUser.friends, name: name } });
+				return <Redirect to={{ pathname: '/chatroom', state: { friends: e.data.createUser.friends, name: name } }} />;
 			})
 			.catch(e => {
 				console.error(e);

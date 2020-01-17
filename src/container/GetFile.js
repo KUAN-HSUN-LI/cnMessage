@@ -15,18 +15,15 @@ const GetFile = props => {
 	// 	fileDownload(output, filename, mimetype);
 	// 	setScribe(true);
 	// }
-	useEffect(
-		function() {
-			if (test.data) {
-				var { stream, filename, mimetype } = test.data.file.data;
-				var output = Buffer.from(stream, 'base64');
-				fileDownload(output, filename, mimetype);
-				console.log('in');
-			}
-		},
-		[test.data]
-	);
-	return <p></p>;
+
+	useEffect(() => {
+		if (test.data) {
+			var { stream, filename, mimetype } = test.data.file.data;
+			var output = Buffer.from(stream, 'base64');
+			fileDownload(output, filename, mimetype);
+		}
+	}, [test.data]);
+	return <></>;
 };
 
 export default GetFile;

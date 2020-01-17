@@ -1,0 +1,37 @@
+.add_friend {
+	margin-left: 1%;
+	padding: 2% 3%;
+	width: 75%;
+	border: 0.15rem solid white;
+	border-radius: 1rem;
+	opacity: 0.5;
+	margin-bottom: 0.7rem;
+}
+
+.add_friend:focus {
+	outline: 0em;
+}
+
+.add_friend_button {
+	font-family: Vidaloka, Microsoft JhengHei;
+	float: right;
+	position: absolute;
+	margin-right: 1em;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+.add_friend_button_label {
+	color: #aed6f1;
+	float: right;
+	border: 0.25em solid #ccc;
+	border-radius: 100%;
+	display: block;
+	padding: 1.5% 1.7%;
+	margin-right: 5%;
+	cursor: pointer;
+}
+.add_friend_button_label:hover {
+	background: #aab7b8;
+	color: white;
+}
