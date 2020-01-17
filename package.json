@@ -22,7 +22,7 @@
 		"uuid": "^3.3.3"
 	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "babel-node src/server/index.js --ext js,graphql",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
