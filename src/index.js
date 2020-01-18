@@ -15,28 +15,25 @@ import * as serviceWorker from './serviceWorker';
 
 const WS = window.location.origin.replace('http', 'ws');
 
-const wsLink = new WebSocketLink({
-	// uri: 'ws://localhost:4000/',
-	uri: WS,
-	options: { reconnect: true },
-	// credentials: 'include',
-});
+const wsLink =
+	process.env.NODE_ENV === 'production'
+		? new WebSocketLink({
+				uri: WS,
+				options: { reconnect: true },
+		  })
+		: new WebSocketLink({
+				uri: 'ws://localhost:4000/',
+				options: { reconnect: true },
+		  });
 
-const upLink = new createUploadLink({
-	// uri: 'http://localhost:4000/',
-	uri: '/',
-	// credentials: 'include',
-});
-
-/*
-const errorLink = onError(({ graphQLErrors }) => {
-  if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message))
-})
-const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, wsLink, httpLink]),
-  cache: new InMemoryCache().restore({}),
-})
-*/
+const upLink =
+	process.env.NODE_ENV === 'production'
+		? new createUploadLink({
+				uri: '/',
+		  })
+		: new createUploadLink({
+				uri: 'http://localhost:4000/',
+		  });
 
 const link = split(
 	// split based on operation type
