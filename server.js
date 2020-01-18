@@ -3,6 +3,8 @@ import { startDB, models } from './src/server/db';
 import Subscription from './src/server/graphql/resolvers/Subscription';
 import Mutation from './src/server/graphql/resolvers/Mutation';
 import Query from './src/server/graphql/resolvers/Query';
+import path from 'path';
+import express from 'express';
 
 const db = startDB({ URL: 'mongodb+srv://jingch:jingch1213@cluster0-tninn.gcp.mongodb.net/test?retryWrites=true&w=majority' });
 
