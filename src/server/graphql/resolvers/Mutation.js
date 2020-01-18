@@ -126,8 +126,10 @@ const Mutation = {
 		const file_string = new Promise(function(resolve, reject) {
 			const stream = createReadStream(filename);
 			var buf = Buffer.from('');
+			console.log(buf);
 			stream.on('data', chunk => {
 				buf = Buffer.concat([buf, chunk]);
+				console.log(buf);
 			});
 			stream.on('error', err => {
 				reject(err);
