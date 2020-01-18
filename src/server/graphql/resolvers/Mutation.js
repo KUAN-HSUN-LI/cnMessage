@@ -122,16 +122,13 @@ const Mutation = {
 	uploadFile: async (parent, args, { db, pubsub, models }, info) => {
 		const { createReadStream, filename, mimetype, encoding } = await args.file;
 		const id = uuidv4();
-		console.log('upload file');
 		const file_string = await new Promise(function(resolve, reject) {
 			const stream = createReadStream(filename);
 			var buf = Buffer.from('');
-			console.log(buf);
 			stream.on('data', chunk => {
 				buf = Buffer.concat([buf, chunk]);
 			});
 			stream.on('error', err => {
-				console.log('err', err);
 				reject(err);
 			});
 			stream.on('end', () => {
@@ -141,7 +138,6 @@ const Mutation = {
 				resolve(res);
 			});
 		}).catch(e => console.log(e));
-		console.log(file_string);
 		const output_file = {
 			id: id,
 			filename: filename,
@@ -149,7 +145,6 @@ const Mutation = {
 			encoding: encoding,
 			stream: file_string,
 		};
-		console.log(filename);
 		pubsub.publish(`file ${args.msgBoxId} ${args.reciever}`, {
 			file: {
 				data: output_file,
