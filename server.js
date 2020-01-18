@@ -32,8 +32,9 @@ server.express.use(express.static(root));
 server.express.get('*', (req, res) => {
 	res.sendFile('index.html', { root });
 });
-console.log(root);
 // }
+
+console.log(process.env.NODE_ENV, process.env);
 
 // const opts = {
 //     port: process.env.PORT || 4000,

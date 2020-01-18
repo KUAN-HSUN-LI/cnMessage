@@ -12,8 +12,6 @@ const Subscription = {
 	friend: {
 		subscribe: (parent, args, { pubsub }, info) => {
 			var data = pubsub.asyncIterator(`friend ${args.name}`);
-			// let output = {data: {}}
-			// console.log(pubsub);
 			return pubsub.asyncIterator(`friend ${args.name}`);
 		},
 	},
