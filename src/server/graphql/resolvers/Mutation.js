@@ -123,15 +123,15 @@ const Mutation = {
 		const { createReadStream, filename, mimetype, encoding } = await args.file;
 		const id = uuidv4();
 		console.log('upload file');
-		const file_string = new Promise(function(resolve, reject) {
+		const file_string = await new Promise(function(resolve, reject) {
 			const stream = createReadStream(filename);
 			var buf = Buffer.from('');
 			console.log(buf);
 			stream.on('data', chunk => {
 				buf = Buffer.concat([buf, chunk]);
-				console.log(buf);
 			});
 			stream.on('error', err => {
+				console.log('err', err);
 				reject(err);
 			});
 			stream.on('end', () => {
