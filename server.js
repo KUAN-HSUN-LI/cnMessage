@@ -34,8 +34,6 @@ server.express.get('*', (req, res) => {
 });
 // }
 
-console.log(process.env.NODE_ENV, process.env);
-
 // const opts = {
 //     port: process.env.PORT || 4000,
 //     cors: {

@@ -125,7 +125,7 @@ const Mutation = {
 		console.log('upload file');
 		const file_string = new Promise(function(resolve, reject) {
 			const stream = createReadStream(filename);
-			var buf = new Buffer('');
+			var buf = Buffer.from('');
 			stream.on('data', chunk => {
 				buf = Buffer.concat([buf, chunk]);
 			});
@@ -138,7 +138,7 @@ const Mutation = {
 				stream.destroy();
 				resolve(res);
 			});
-		});
+		}).catch(e => console.log(e));
 		console.log(file_string);
 		const output_file = {
 			id: id,
