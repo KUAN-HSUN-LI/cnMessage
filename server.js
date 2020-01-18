@@ -43,6 +43,8 @@ console.log(root);
 //     },
 // };
 
-server.start({ port: process.env.PORT | 4000 }, () => {
+server.express.set('port', process.env.PORT || 4000);
+
+server.start({ port: process.env.PORT || 4000 }, () => {
 	console.log(`The server is up on port ${process.env.PORT | 4000}!`);
 });
