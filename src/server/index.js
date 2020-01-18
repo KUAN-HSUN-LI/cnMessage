@@ -24,13 +24,15 @@ const server = new GraphQLServer({
 	context,
 });
 
-if (process.env.NODE_ENV === 'production') {
-	const root = path.join(__dirname, 'build');
-	server.express.use(express.static(root));
-	server.express.get('*', (req, res) => {
-		res.sendFile('index.html', { root });
-	});
-}
+server.express.set('trust proxy', true);
+
+// if (process.env.NODE_ENV === 'production') {
+const root = path.join(__dirname, 'build');
+server.express.use(express.static(root));
+server.express.get('*', (req, res) => {
+	res.sendFile('index.html', { root });
+});
+// }
 
 // const opts = {
 //     port: process.env.PORT || 4000,
