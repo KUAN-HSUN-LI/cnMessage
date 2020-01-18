@@ -122,10 +122,10 @@ const Mutation = {
 	uploadFile: async (parent, args, { db, pubsub, models }, info) => {
 		const { createReadStream, filename, mimetype, encoding } = await args.file;
 		const id = uuidv4();
-
+		console.log('upload file');
 		const file_string = new Promise(function(resolve, reject) {
 			const stream = createReadStream(filename);
-			var buf = new Buffer.from('');
+			var buf = new Buffer('');
 			stream.on('data', chunk => {
 				buf = Buffer.concat([buf, chunk]);
 			});
@@ -139,7 +139,7 @@ const Mutation = {
 				resolve(res);
 			});
 		});
-
+		console.log(file_string);
 		const output_file = {
 			id: id,
 			filename: filename,
