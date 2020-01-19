@@ -8,7 +8,7 @@ import AddFriend from '../component/AddFriend';
 import { CREATE_MSG_MUTATION, UPLOAD_FILE_MUTATION, FRIEND_SUBSCRIPTION } from '../graphql';
 
 const ChatRoom = props => {
-	const name = props.location.state.name;
+	const name = localStorage.getItem('name');
 	const [msgBoxId, setMsgBoxId] = useState(null);
 	const [friend, setFriend] = useState(null);
 	const [newMsg, setNewMsg] = useState('');

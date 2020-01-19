@@ -29,9 +29,10 @@ const Login = props => {
 		})
 			.then(e => {
 				dispatch({ type: 'friends', payload: { friends: e.data.loginUser.friends } });
+				localStorage.setItem('name', name);
 				localStorage.setItem('friends', JSON.stringify(e.data.loginUser.friends));
-				props.history.push({ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } });
-				return <Redirect to={{ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } }} />;
+				props.history.push({ pathname: '/chatroom' });
+				return <Redirect to={{ pathname: '/chatroom' }} />;
 			})
 			.catch(e => {
 				console.error(e);
