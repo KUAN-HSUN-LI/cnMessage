@@ -1,3 +1,4 @@
+require('dotenv').config();
 import { GraphQLServer, PubSub } from 'graphql-yoga';
 import { startDB, models } from './server/db';
 import Subscription from './server/graphql/resolvers/Subscription';
