@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '../component/Button';
 import Input from '../component/Input';
 import { Redirect } from 'react-router-dom';
 import { useMutation } from 'react-apollo';
+import { Context } from '../context';
 import './Login.css';
 
 import { LOGIN_USER_MUTATION } from '../graphql';
 
 const Login = props => {
+	const { dispatch } = useContext(Context);
 	const [name, setName] = useState('');
 	const [pwd, setPwd] = useState('');
 	const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION);
@@ -26,6 +28,9 @@ const Login = props => {
 			},
 		})
 			.then(e => {
+				dispatch({ type: 'friends', payload: { friends: e.data.loginUser.friends } });
+				console.log(e.data.loginUser.friends);
+				localStorage.setItem('friends', JSON.stringify(e.data.loginUser.friends));
 				props.history.push({ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } });
 				return <Redirect to={{ pathname: '/chatroom', state: { friends: e.data.loginUser.friends, name: name } }} />;
 			})
