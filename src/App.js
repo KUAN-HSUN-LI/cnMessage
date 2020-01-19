@@ -9,7 +9,6 @@ function App() {
 		<div className="App">
 			<BrowserRouter>
 				<Switch>
-					{/* <Route exact path="/" render={() => <Redirect to="/login" />} /> */}
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/chatroom" component={ChatRoom} />
