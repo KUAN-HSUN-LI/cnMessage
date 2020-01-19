@@ -26,8 +26,10 @@ const Regist = props => {
 			},
 		})
 			.then(e => {
-				props.history.push({ pathname: '/chatroom', state: { friends: e.data.createUser.friends, name: name } });
-				return <Redirect to={{ pathname: '/chatroom', state: { friends: e.data.createUser.friends, name: name } }} />;
+				localStorage.setItem('name', name);
+				localStorage.setItem('friends', JSON.stringify(e.data.createUser.friends));
+				props.history.push({ pathname: '/chatroom' });
+				return <Redirect to={{ pathname: '/chatroom' }} />;
 			})
 			.catch(e => {
 				console.error(e);
