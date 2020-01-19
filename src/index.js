@@ -12,6 +12,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { ContextProvider } from './context';
 
 const WS = window.location.origin.replace('http', 'ws');
 
@@ -52,7 +53,9 @@ const client = new ApolloClient({
 
 const wrappedApp = (
 	<ApolloProvider client={client}>
-		<App />
+		<ContextProvider>
+			<App />
+		</ContextProvider>
 	</ApolloProvider>
 );
 

@@ -1,8 +1,8 @@
 import { GraphQLServer, PubSub } from 'graphql-yoga';
-import { startDB, models } from './src/server/db';
-import Subscription from './src/server/graphql/resolvers/Subscription';
-import Mutation from './src/server/graphql/resolvers/Mutation';
-import Query from './src/server/graphql/resolvers/Query';
+import { startDB, models } from './server/db';
+import Subscription from './server/graphql/resolvers/Subscription';
+import Mutation from './server/graphql/resolvers/Mutation';
+import Query from './server/graphql/resolvers/Query';
 import path from 'path';
 import express from 'express';
 
@@ -17,7 +17,7 @@ const context = {
 };
 
 const server = new GraphQLServer({
-	typeDefs: `${__dirname}/src/server/graphql/schema.graphql`,
+	typeDefs: `${__dirname}/server/graphql/schema.graphql`,
 	resolvers: {
 		Query,
 		Mutation,
@@ -33,16 +33,6 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile('index.html', { root });
 	});
 }
-
-// const opts = {
-//     port: process.env.PORT || 4000,
-//     cors: {
-//       credentials: true,
-//       origin: ['http://localhost:3000','http://localhost:3001']
-//     },
-// };
-
-server.express.set('port', process.env.PORT || 4000);
 
 server.start({ port: process.env.PORT || 4000 }, () => {
 	console.log(`The server is up on port ${process.env.PORT | 4000}!`);

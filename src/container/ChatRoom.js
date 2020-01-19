@@ -4,15 +4,15 @@ import { useMutation, useSubscription } from 'react-apollo';
 import Message from '../component/Message';
 import GetFile from './GetFile';
 import AddFriend from '../component/AddFriend';
+
 import { CREATE_MSG_MUTATION, UPLOAD_FILE_MUTATION, FRIEND_SUBSCRIPTION } from '../graphql';
 
 const ChatRoom = props => {
-	const friends = props.location.state.friends;
 	const name = props.location.state.name;
 	const [msgBoxId, setMsgBoxId] = useState(null);
 	const [friend, setFriend] = useState(null);
 	const [newMsg, setNewMsg] = useState('');
-
+	const [friends, setFriends] = useState(JSON.parse(localStorage.getItem('friends')));
 	const [createMsgMutation] = useMutation(CREATE_MSG_MUTATION);
 	const [uploadFileMutation] = useMutation(UPLOAD_FILE_MUTATION);
 
@@ -36,12 +36,15 @@ const ChatRoom = props => {
 			variables: { file: file, msgBoxId: msgBoxId, reciever: friend },
 		});
 	};
-
 	useEffect(() => {
 		if (newFriend.data) {
-			friends.push(newFriend.data.friend.data);
+			setFriends(friends => friends.concat(newFriend.data.friend.data));
 		}
-	}, [newFriend.data, friends]);
+	}, [newFriend.data]);
+
+	useEffect(() => {
+		localStorage.setItem('friends', JSON.stringify(friends));
+	}, [friends]);
 
 	useEffect(() => {
 		var current = document.getElementById(friend);
