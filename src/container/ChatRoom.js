@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChatRoom.css';
 import { useMutation, useSubscription } from 'react-apollo';
 import Message from '../component/Message';
@@ -7,11 +7,11 @@ import AddFriend from '../component/AddFriend';
 
 import { CREATE_MSG_MUTATION, UPLOAD_FILE_MUTATION, FRIEND_SUBSCRIPTION } from '../graphql';
 
-const ChatRoom = props => {
+const ChatRoom = () => {
 	const name = localStorage.getItem('name');
 	const [msgBoxId, setMsgBoxId] = useState(null);
 	const [friend, setFriend] = useState(null);
-	const [newMsg, setNewMsg] = useState('');
+	const newMsg = useRef(null);
 	const [friends, setFriends] = useState(JSON.parse(localStorage.getItem('friends')));
 	const [createMsgMutation] = useMutation(CREATE_MSG_MUTATION);
 	const [uploadFileMutation] = useMutation(UPLOAD_FILE_MUTATION);
@@ -20,14 +20,14 @@ const ChatRoom = props => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		if (newMsg === '') return;
+		if (newMsg.current.value === '') return;
 		createMsgMutation({
 			variables: {
 				messageBoxId: msgBoxId,
 				author: name,
-				body: newMsg,
+				body: newMsg.current.value,
 			},
-		}).then(setNewMsg(''));
+		}).then((newMsg.current.value = ''));
 	};
 
 	const handleUploadFile = e => {
@@ -57,6 +57,10 @@ const ChatRoom = props => {
 			};
 		}
 	}, [friend]);
+
+	useEffect(() => {
+		console.log(newMsg.current.value);
+	});
 
 	return (
 		<div className="ChatRoom">
@@ -110,13 +114,12 @@ const ChatRoom = props => {
 				<textarea
 					className="textbox"
 					type="text"
-					onChange={e => setNewMsg(e.target.value)}
 					onKeyPress={e => {
 						if (e.key === 'Enter' && !e.shiftKey) {
 							handleSubmit(e);
 						}
 					}}
-					value={newMsg}></textarea>
+					ref={newMsg}></textarea>
 			</div>
 		</div>
 	);
