@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloClient, InMemoryCache } from 'apollo-boost';
-//import { ApolloLink } from 'apollo-boost'
-//import { onError } from 'apollo-link-error'
 import { ApolloProvider } from 'react-apollo';
 import { split } from 'apollo-link';
-// import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { createUploadLink } from 'apollo-upload-client';
 import { getMainDefinition } from 'apollo-utilities';

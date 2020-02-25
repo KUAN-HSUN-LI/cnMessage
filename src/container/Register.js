@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import Button from '../component/Button';
-import Input from '../component/Input';
 import { Redirect } from 'react-router-dom';
 import { useMutation } from 'react-apollo';
 import './Login.css';
+import './Input.css';
 
 import { CREATE_USER_MUTATION } from '../graphql';
 
 const Regist = props => {
-	const [name, setName] = useState('');
-	const [pwd, setPwd] = useState('');
+	const name = useRef(null);
+	const pwd = useRef(null);
 	const [createUserMutation] = useMutation(CREATE_USER_MUTATION);
 	const handleKeypress = e => {
 		if (e.key === 'Enter') {
@@ -21,8 +21,8 @@ const Regist = props => {
 		if (!name || !pwd) return;
 		createUserMutation({
 			variables: {
-				name: name,
-				pwd: pwd,
+				name: name.current.value,
+				pwd: pwd.current.value,
 			},
 		})
 			.then(e => {
@@ -40,19 +40,11 @@ const Regist = props => {
 			<h1 className="title">Message Box Login</h1>
 			<label className="white-word">User Name</label>
 			<br />
-			<Input
-				className="input-base"
-				type="text"
-				onChange={e => setName(e.target.value)}
-				onKeyPress={e => handleKeypress(e)}></Input>
+			<input className="input-base" type="text" onKeyPress={e => handleKeypress(e)} ref={name}></input>
 			<br />
 			<label className="white-word">Password</label>
 			<br />
-			<Input
-				className="input-base"
-				type="password"
-				onChange={e => setPwd(e.target.value)}
-				onKeyPress={e => handleKeypress(e)}></Input>
+			<input className="input-base" type="password" onKeyPress={e => handleKeypress(e)} ref={pwd}></input>
 			<br />
 			<Button name="register" onClick={e => handleSubmit(e)}></Button>
 			<Button

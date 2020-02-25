@@ -1,43 +1,51 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Button from '../component/Button';
-import Input from '../component/Input';
 import { Redirect } from 'react-router-dom';
 import { useMutation } from 'react-apollo';
-import { Context } from '../context';
+// import { Context } from '../context';
 import './Login.css';
+import './Input.css';
 
 import { LOGIN_USER_MUTATION } from '../graphql';
 
 const Login = props => {
-	const { dispatch } = useContext(Context);
-	const [name, setName] = useState('');
-	const [pwd, setPwd] = useState('');
-	const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION);
+	// const { dispatch } = useContext(Context);
+	const name = useRef(null);
+	const pwd = useRef(null);
+	const [loginUserMutation, { loading: mutationLoading }] = useMutation(LOGIN_USER_MUTATION, {
+		onCompleted(data) {
+			localStorage.setItem('name', name);
+			// localStorage.setItem('friends', JSON.stringify(e.data.loginUser.friends));
+			props.history.push({ pathname: '/chatroom' });
+			return <Redirect to={{ pathname: '/chatroom' }} />;
+		},
+		onError(err) {
+			console.error(err);
+		},
+	});
 	const handleKeypress = e => {
 		if (e.key === 'Enter') {
 			handleSubmit(e);
 		}
 	};
+
 	const handleSubmit = e => {
 		e.preventDefault();
 		if (!name || !pwd) return;
 		loginUserMutation({
 			variables: {
-				name: name,
-				pwd: pwd,
+				name: name.current.value,
+				pwd: pwd.current.value,
 			},
-		})
-			.then(e => {
-				dispatch({ type: 'friends', payload: { friends: e.data.loginUser.friends } });
-				localStorage.setItem('name', name);
-				localStorage.setItem('friends', JSON.stringify(e.data.loginUser.friends));
-				props.history.push({ pathname: '/chatroom' });
-				return <Redirect to={{ pathname: '/chatroom' }} />;
-			})
-			.catch(e => {
-				console.error(e);
-			});
+		});
 	};
+	useEffect(() => {
+		console.log(name.current.value);
+		return console.log(name.current.value, 555);
+	});
+	if (mutationLoading) {
+		console.log('loading');
+	}
 	return (
 		<div className="login-base">
 			<h1 className="title">Message Box Login</h1>
@@ -45,21 +53,13 @@ const Login = props => {
 				User Name
 			</div>
 			<div>
-				<Input
-					className="input-base"
-					type="text"
-					onChange={e => setName(e.target.value)}
-					onKeyPress={e => handleKeypress(e)}></Input>
+				<input className="input-base" type="text" onKeyPress={e => handleKeypress(e)} ref={name}></input>
 			</div>
 			<div type="label" className="white-word">
 				Password
 			</div>
 			<div>
-				<Input
-					className="input-base"
-					type="password"
-					onChange={e => setPwd(e.target.value)}
-					onKeyPress={e => handleKeypress(e)}></Input>
+				<input className="input-base" type="password" onKeyPress={e => handleKeypress(e)} ref={pwd}></input>
 			</div>
 			<Button name="submit" onClick={handleSubmit}></Button>
 			<Button
