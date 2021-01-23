@@ -12,23 +12,20 @@ const Login = (props) => {
   // const { dispatch } = useContext(Context);
   const name = useRef(null)
   const pwd = useRef(null)
-  const [loginUserMutation, { loading: mutationLoading }] = useMutation(
-    LOGIN_USER_MUTATION,
-    {
-      async onCompleted(data) {
-        await localStorage.setItem("name", name)
-        await localStorage.setItem(
-          "friends",
-          JSON.stringify(data.loginUser.friends)
-        )
-        props.history.push({ pathname: "/chatroom" })
-        return <Redirect to={{ pathname: "/chatroom" }} />
-      },
-      onError(err) {
-        console.error(err)
-      },
-    }
-  )
+  const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
+    async onCompleted(data) {
+      await localStorage.setItem("name", name.current.value)
+      await localStorage.setItem(
+        "friends",
+        JSON.stringify(data.loginUser.friends)
+      )
+      props.history.push({ pathname: "/chatroom" })
+      return <Redirect to={{ pathname: "/chatroom" }} />
+    },
+    onError(err) {
+      console.error(err)
+    },
+  })
   const handleKeypress = (e) => {
     if (e.key === "Enter") {
       handleSubmit(e)
