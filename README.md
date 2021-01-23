@@ -3,6 +3,7 @@
 ### Introduction
 
 a simple chat room build with react, apollo, and graphql
+<img src="assets/demo.gif"/>
 
 ### Deploy link
 
@@ -45,6 +46,7 @@ https://cnmessage.herokuapp.com/login
 ### features
 
 - [x] Add friend
+- [x] Local Cache
 - [x] File transfer
 - [ ] Screen share
 - [ ] Live stream
